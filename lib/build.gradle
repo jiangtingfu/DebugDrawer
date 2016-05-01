@@ -7,8 +7,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
+        vectorDrawables.useSupportLibrary = true
     }
     
     buildTypes {
@@ -20,6 +19,11 @@ android {
 }
 
 dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     provided rootProject.ext.dependencies["appcompat-v7"]
-    provided 'com.jakewharton.timber:timber:4.1.0'
+
+    provided 'com.squareup.okhttp3:okhttp:3.1.2'
+    provided 'jp.wasabeef:takt:1.0.2'
+    provided 'com.jakewharton.scalpel:scalpel:1.1.2'
+    provided 'com.github.tianzhijiexian:Logcat:f5336ef076'
 }

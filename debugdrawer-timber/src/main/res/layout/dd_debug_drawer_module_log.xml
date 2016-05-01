@@ -5,12 +5,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="12dp"
-    tools:background="@color/gray"
     tools:ignore="UselessParent"
     >
 
     <TextView
-        style="@style/Widget.DebugDrawer.Base.Header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Timber"
@@ -20,7 +18,7 @@
         android:id="@+id/dd_button_log"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show logs"
+        android:text="Show Timber logs"
         android:textAllCaps="true"
         />
 </LinearLayout>

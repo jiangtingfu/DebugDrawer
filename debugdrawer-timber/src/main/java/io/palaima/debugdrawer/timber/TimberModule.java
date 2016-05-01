@@ -5,13 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.palaima.debugdrawer.base.DebugModule;
 import io.palaima.debugdrawer.timber.ui.LogDialog;
 
-public class TimberModule implements DebugModule {
+public class TimberModule  {
 
     @NonNull
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull final ViewGroup parent) {
         View view = inflater.inflate(R.layout.dd_debug_drawer_module_log, parent, false);
 
@@ -23,35 +21,5 @@ public class TimberModule implements DebugModule {
         });
 
         return view;
-    }
-
-    @Override
-    public void onOpened() {
-
-    }
-
-    @Override
-    public void onClosed() {
-
-    }
-
-    @Override
-    public void onResume() {
-
-    }
-
-    @Override
-    public void onPause() {
-
-    }
-
-    @Override
-    public void onStart() {
-
-    }
-
-    @Override
-    public void onStop() {
-
     }
 }
