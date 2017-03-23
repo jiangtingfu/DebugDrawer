@@ -6,8 +6,7 @@
     android:layout_gravity="start"
     android:layout_marginEnd="@dimen/dd_debug_drawer_margin"
     android:layout_marginRight="@dimen/dd_debug_drawer_margin"
-    android:background="#ee212121"
-    android:elevation="8dp"
+    android:background="@color/gray_alpha"
     android:orientation="vertical"
     >
 

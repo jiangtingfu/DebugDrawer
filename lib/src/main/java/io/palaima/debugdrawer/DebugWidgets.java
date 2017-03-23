@@ -1,5 +1,8 @@
 package io.palaima.debugdrawer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -11,9 +14,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Kale
@@ -57,7 +57,7 @@ public class DebugWidgets {
         }
 
         public DebugWidgetsBuilder addButton(String text, View.OnClickListener listener) {
-            Button button = new Button(new ContextThemeWrapper(context, R.style.Widget_DebugDrawer_Base_RowWidget));
+            Button button = new Button(new ContextThemeWrapper(context, R.style.Widget_DebugDrawer_Base_RowWidget_Black));
             button.setText(text);
             button.setOnClickListener(listener);
             return returnBuilder(null, button);

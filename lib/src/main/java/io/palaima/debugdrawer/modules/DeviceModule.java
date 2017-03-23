@@ -16,23 +16,23 @@
 
 package io.palaima.debugdrawer.modules;
 
-import android.content.Context;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.util.DisplayMetrics;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import io.palaima.debugdrawer.DebugModule;
+import android.app.Activity;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
+
+import io.palaima.debugdrawer.BaseDebugModule;
 import io.palaima.debugdrawer.DebugWidgets;
 
 
 /**
  * http://blog.csdn.net/vennl/article/details/7078738
  */
-public class DeviceModule implements DebugModule {
+public class DeviceModule extends BaseDebugModule {
 
     private String deviceMake;
 
@@ -48,8 +48,16 @@ public class DeviceModule implements DebugModule {
 
     private String androidApi;
 
-    public DeviceModule(Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+    @NonNull
+    @Override
+    public String getName() {
+        return "Device Info";
+    }
+
+    @Override
+    public void onCreate(Activity activity) {
+        super.onCreate(activity);
+        DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
         String densityBucket = getDensityString(displayMetrics);
         deviceMake = truncateAt(Build.MANUFACTURER, 20);
         deviceModel = truncateAt(Build.MODEL, 20);
@@ -63,12 +71,6 @@ public class DeviceModule implements DebugModule {
         deviceDensity = displayMetrics.densityDpi + "dpi (" + densityBucket + ")";
         systemVersion = Build.VERSION.RELEASE;
         androidApi = String.valueOf(Build.VERSION.SDK_INT);
-    }
-
-    @NonNull
-    @Override
-    public String getName() {
-        return "Device Info";
     }
 
     @Override
@@ -97,7 +99,7 @@ public class DeviceModule implements DebugModule {
         return null;
     }
 
-    public static String truncateAt(String string, int length) {
+    private static String truncateAt(String string, int length) {
         return string.length() > length ? string.substring(0, length) : string;
     }
 

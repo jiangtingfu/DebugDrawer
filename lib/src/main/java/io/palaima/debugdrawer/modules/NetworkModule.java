@@ -16,28 +16,30 @@
 
 package io.palaima.debugdrawer.modules;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.widget.CompoundButton;
 
-import io.palaima.debugdrawer.DebugModule;
+import io.palaima.debugdrawer.BaseDebugModule;
 import io.palaima.debugdrawer.DebugWidgets;
 import io.palaima.debugdrawer.util.NetworkController;
 
 
-public class NetworkModule implements DebugModule {
+public class NetworkModule extends BaseDebugModule {
 
     private NetworkController networkController;
-
-    public NetworkModule(Context context) {
-        networkController = NetworkController.newInstance(context);
-    }
 
     @NonNull
     @Override
     public String getName() {
         return "Network";
+    }
+
+    @Override
+    public void onCreate(Activity activity) {
+        super.onCreate(activity);
+        networkController = NetworkController.newInstance(activity);
     }
 
     @Override

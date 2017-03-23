@@ -16,6 +16,8 @@
 
 package io.palaima.debugdrawer;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.CheckResult;
@@ -32,9 +34,6 @@ import android.widget.GridLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.List;
-
-import io.palaima.debugdrawer.modules.FpsModule;
 import io.palaima.debugdrawer.util.UIUtils;
 import io.palaima.debugdrawer.view.ScrimInsetsFrameLayout;
 
@@ -48,11 +47,20 @@ public class DebugDrawer {
 
     private int drawerGravity;
 
-    private DebugDrawer(Builder builder) {
+    private DebugDrawer(final Builder builder) {
         this.builder = builder;
         drawerLayout = builder.drawerLayout;
         drawerGravity = builder.drawerGravity;
         sliderLayout = builder.sliderLayout;
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                for (IDebugModule module : builder.debugModules) {
+                    module.onDrawerOpened();
+                }
+            }
+        });
     }
 
     /**
@@ -106,11 +114,9 @@ public class DebugDrawer {
     }
 
     public void destroy() {
-        for (DebugModule module : builder.debugModules) {
-            if (module instanceof FpsModule) {
-                ((FpsModule) module).close();
-            }
-        }
+        /*for (IDebugModule module : builder.debugModules) {
+            
+        }*/
     }
 
     public static class Builder {
@@ -128,7 +134,7 @@ public class DebugDrawer {
         //the width of the drawer
         private int drawerWidth = -1;
 
-        private List<DebugModule> debugModules;
+        private List<IDebugModule> debugModules;
 
         private DrawerLayout.DrawerListener onDrawerListener;
 
@@ -179,7 +185,7 @@ public class DebugDrawer {
         /**
          * Add a initial DrawerItem or a DrawerItem Array for the Drawer
          */
-        public Builder modules(List<DebugModule> drawerItems) {
+        public Builder modules(List<IDebugModule> drawerItems) {
             this.debugModules = drawerItems;
             return this;
         }
@@ -275,7 +281,7 @@ public class DebugDrawer {
                 sliderLayout.setLayoutParams(params);
             }
 
-            for (DebugModule module : debugModules) {
+            for (IDebugModule module : debugModules) {
                 inflateModules(module, moduleGl);
             }
 
@@ -288,7 +294,9 @@ public class DebugDrawer {
             return result;
         }
 
-        private void inflateModules(DebugModule module, GridLayout gl) {
+        private void inflateModules(IDebugModule module, GridLayout gl) {
+            module.setActivity(activity);
+            module.onCreate(activity);
             View titleV = LayoutInflater.from(activity).inflate(R.layout.dd_module_title, null, false);
             ((TextView) titleV.findViewById(R.id.title_tv)).setText(module.getName());
             GridLayout.LayoutParams params = getSpanColParams(gl);
@@ -296,6 +304,11 @@ public class DebugDrawer {
             gl.addView(titleV, params);
 
             DebugWidgets widgets = module.createWidgets(new DebugWidgets.DebugWidgetsBuilder(activity));
+            if (widgets == null) {
+                gl.removeView(titleV);
+                return;
+            }
+            
             for (DebugWidgets.DebugWidgetsBuilder.DebugWidget widget : widgets.getWidgets()) {
                 if (widget.title != null) {
                     // add title widget

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    >
+
+    <View
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#ffab"
+        />
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="30dp"
+        android:background="#667ab9"
+        />
+
+    <View
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="60dp"
+        android:background="#abe635"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="二十sp"
+        android:textSize="20sp"
+        />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorPrimaryDark"
+        android:padding="20dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="三十sp"
+            android:textColor="@color/blue"
+            android:textSize="30sp"
+            />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/sak_box_bg"
+        android:text="圆角10dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="30sp"
+        />
+
+</LinearLayout>

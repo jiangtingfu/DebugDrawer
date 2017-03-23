@@ -1,90 +1,47 @@
 package io.palaima.debugdrawer.app;
 
-import android.app.Activity;
-import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.palaima.debugdrawer.DebugDrawer;
-import io.palaima.debugdrawer.DebugModule;
-import io.palaima.debugdrawer.modules.ActivityModule;
-import io.palaima.debugdrawer.modules.BuildModule;
-import io.palaima.debugdrawer.modules.DeviceModule;
-import io.palaima.debugdrawer.modules.FpsModule;
-import io.palaima.debugdrawer.modules.LogcatModule;
-import io.palaima.debugdrawer.modules.NetworkModule;
-import io.palaima.debugdrawer.modules.ScalpelModule;
-import io.palaima.debugdrawer.modules.SettingsModule;
-import jp.wasabeef.takt.Takt;
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
-import timber.log.Timber;
-
-public class MainActivity extends AppCompatActivity {
-
-    DebugDrawer debugDrawer;
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (DebugDrawer.checkActivity(this)) {
-            debugDrawer = new DebugDrawer.Builder(this)
-                    .modules(getDebugModules(this))
-                    .build();
-
-            debugDrawer.openDrawer();
-        }
-
-    }
-    
-    public DebugDrawer.Builder getDrawerBuilder(Activity activity) {
-        return new DebugDrawer.Builder(activity)
-                .modules(getDebugModules(activity));
-    }
-
-    public List<DebugModule> getDebugModules(Activity activity) {
-        List<DebugModule> list = Arrays.asList(
-                new ActivityModule(getApplicationContext()),
-                new NetworkModule(getApplicationContext()),
-                new FpsModule(Takt.stock(getApplication())),
-                new BuildModule(getApplicationContext()),
-                new ScalpelModule(activity),
-                new LogcatModule(activity),
-                new DeviceModule(getApplicationContext()),
-                new SettingsModule(activity));
-        return new ArrayList<>(list);
-    }
-
-    private void showDummyLog() {
-        Timber.d("Debug");
-        Timber.e("Error");
-        Timber.w("Warning");
-        Timber.i("Info");
-        Timber.v("Verbose");
-        Timber.wtf("WTF");
-    }
-
-
-    private static final int DISK_CACHE_SIZE = 30 * 1024 * 1024; // 30 MB
-
-    private static OkHttpClient.Builder createOkHttpClientBuilder(Application app) {
-        // Install an HTTP cache in the application cache directory.
-        File cacheDir = new File(app.getCacheDir(), "okhttp3-cache");
-        Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
-
-        return new OkHttpClient.Builder()
-                .cache(cache)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .connectTimeout(10, TimeUnit.SECONDS);
+        findViewById(R.id.open_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                debugDrawer.openDrawer();
+            }
+        });
+        findViewById(R.id.db_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, DataBaseActivity.class));
+            }
+        });
+        findViewById(R.id.leak_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, LeakActivity.class));
+            }
+        });
+        findViewById(R.id.okhttp_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, OkHttp3Activity.class));
+            }
+        });
+        findViewById(R.id.ui_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, UiActivity.class));
+            }
+        });
+        OkHttp3Activity.sendRequest();
     }
 
     @Override

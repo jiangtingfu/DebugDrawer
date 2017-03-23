@@ -25,22 +25,23 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Toast;
 
-import io.palaima.debugdrawer.DebugModule;
+import io.palaima.debugdrawer.BaseDebugModule;
 import io.palaima.debugdrawer.DebugWidgets;
 import io.palaima.debugdrawer.R;
 
-public class SettingsModule implements DebugModule {
+public class SettingsModule extends BaseDebugModule {
 
-    private final Activity activity;
-
-    public SettingsModule(Activity activity) {
-        this.activity = activity;
-    }
+    private Activity activity;
 
     @NonNull
     @Override
     public String getName() {
         return "Settings";
+    }
+
+    @Override
+    public void onCreate(Activity activity) {
+        this.activity = activity;
     }
 
     @Override
@@ -106,7 +107,6 @@ public class SettingsModule implements DebugModule {
                         activity.startActivity(settingsIntent);
                     }
                 })
-
                 .addIconButton("Uninstall", R.drawable.delete, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -118,4 +118,5 @@ public class SettingsModule implements DebugModule {
                 })
                 .build();
     }
+
 }

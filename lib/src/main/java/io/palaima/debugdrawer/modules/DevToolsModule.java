@@ -1,33 +1,26 @@
 package io.palaima.debugdrawer.modules;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import io.palaima.debugdrawer.BaseDebugModule;
 import io.palaima.debugdrawer.DebugWidgets;
-import io.palaima.debugdrawer.util.LibUtil;
-import kale.debug.log.ui.LogActivity;
 
 /**
  * @author Kale
- * @date 2016/3/26
+ * @date 2017/3/22
  */
-public class LogcatModule extends BaseDebugModule {
+public class DevToolsModule extends BaseDebugModule {
 
     private Activity activity;
-
-    public LogcatModule() {
-        if (!LibUtil.hasDependency("kale.debug.log.ui.LogActivity")) {
-            throw new RuntimeException("Logcat dependency is not found");
-        }
-    }
 
     @NonNull
     @Override
     public String getName() {
-        return "Logcat";
+        return "Dev Tools";
     }
 
     @Override
@@ -38,10 +31,15 @@ public class LogcatModule extends BaseDebugModule {
 
     @Override
     public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
-        return builder.addButton("Show App Log", new View.OnClickListener() {
+        return builder.addButton("Jump to Dev-Tools", new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                activity.startActivity(new Intent(activity, LogActivity.class));
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                String pkgName = "cn.trinea.android.developertools";
+                ComponentName cn = new ComponentName(pkgName, pkgName + ".MainActivity");
+                intent.setComponent(cn);
+                activity.startActivity(intent);
             }
         }).build();
     }

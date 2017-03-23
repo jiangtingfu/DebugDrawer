@@ -16,30 +16,33 @@
 
 package io.palaima.debugdrawer.modules;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
+import io.palaima.debugdrawer.BaseDebugModule;
 import io.palaima.debugdrawer.DebugWidgets;
-import io.palaima.debugdrawer.DebugModule;
 
 
-public class BuildModule implements DebugModule {
+public class BuildModule extends BaseDebugModule {
 
     private PackageInfo info;
-
-    public BuildModule(Context context) {
-        try {
-            info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
-    }
 
     @NonNull
     @Override
     public String getName() {
         return "Build Information";
+    }
+
+    @Override
+    public void onCreate(Activity activity) {
+        super.onCreate(activity);
+        try {
+            info = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -50,4 +53,5 @@ public class BuildModule implements DebugModule {
                 .addText("Package", info.packageName)
                 .build();
     }
+    
 }

@@ -4,20 +4,14 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import io.palaima.debugdrawer.DebugModule;
+import io.palaima.debugdrawer.BaseDebugModule;
 import io.palaima.debugdrawer.DebugWidgets;
 
 /**
  * @author Kale
  * @date 2016/5/4
  */
-public class ActivityModule implements DebugModule {
-
-    private Context context;
-
-    public ActivityModule(Context context) {
-        this.context = context;
-    }
+public class ActivityModule extends BaseDebugModule {
 
     @NonNull
     @Override
@@ -27,7 +21,7 @@ public class ActivityModule implements DebugModule {
 
     @Override
     public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
-        String fullName = getRunningActivityName(context);
+        String fullName = getRunningActivityName(getActivity());
         String[] names = fullName.split("\\.");
         return builder.addText(null, names[names.length - 1]).build();
     }
