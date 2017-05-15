@@ -37,25 +37,21 @@ public class MyApplication extends Application {
         super.onCreate();
 //        SAK.init(this, new SakConfigBuild(this).build());
         okHttpClient = createOkHttpClientBuilder(this).build();
-        okHttpClient = DebugDrawer.createOkLogHttpClient(okHttpClient);
-        initDebugDrawer();
-    }
-
-    private void initDebugDrawer() {
+        okHttpClient = DebugDrawer.createOkLogHttpClient(okHttpClient); // 依赖于：com.github.simonpercic:oklog3:2.1.0
         DebugDrawer.init(this, new DebugDrawer.Config() {
             @Override
             protected List<IDebugModule> getModules() {
                 return new ArrayList<IDebugModule>(Arrays.asList(
                         new ActivityModule(),
-                        new MonitorModule(),
+                        new MonitorModule(), // 依赖于：com.github.xcc3641:watcher:0.5
                         new MemoryModule(),
-                        new CustomDevModule(),
+                        new CustomDevModule(), // 自定义的module
                         new DevToolsModule(),
                         new BuildModule(),
                         new NetworkModule(),
-                        new OkHttp3Module(okHttpClient),
-                        new DataBaseModule(),
-                        new LogcatModule(),
+                        new OkHttp3Module(okHttpClient), // 依赖于：com.squareup.okhttp3:okhttp:3.1.2
+                        new DataBaseModule(), // 依赖于：com.amitshekhar.android:debug-db:1.0.0
+                        new LogcatModule(), // 依赖于：com.github.tianzhijiexian:Logcat:1.0.7
                         new DeviceModule(),
                         new SettingsModule()
                 ));
