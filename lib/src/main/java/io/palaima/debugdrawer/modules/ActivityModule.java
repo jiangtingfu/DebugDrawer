@@ -16,7 +16,7 @@ public class ActivityModule extends BaseDebugModule {
     @NonNull
     @Override
     public String getName() {
-        return "Activity";
+        return "Current Activity";
     }
 
     @Override

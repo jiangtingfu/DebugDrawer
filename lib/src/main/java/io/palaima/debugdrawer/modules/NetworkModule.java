@@ -37,8 +37,8 @@ public class NetworkModule extends BaseDebugModule {
     }
 
     @Override
-    public void onCreate(Activity activity) {
-        super.onCreate(activity);
+    public void onAttachActivity(Activity activity) {
+        super.onAttachActivity(activity);
         networkController = NetworkController.newInstance(activity);
     }
 

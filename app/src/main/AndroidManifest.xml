@@ -30,6 +30,8 @@
         <activity android:name=".LeakActivity" />
         <activity android:name=".OkHttp3Activity" />
         <activity android:name=".UiActivity" />
+        <activity android:name=".CustomDevActivity" />
+        <activity android:name=".BlockActivity" />
     </application>
 
 </manifest>

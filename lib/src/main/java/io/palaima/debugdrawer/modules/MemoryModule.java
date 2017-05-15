@@ -1,5 +1,7 @@
 package io.palaima.debugdrawer.modules;
 
+import java.text.DecimalFormat;
+
 import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 
@@ -10,7 +12,7 @@ import io.palaima.debugdrawer.DebugWidgets;
  * @author Kale
  * @date 2017/3/22
  */
-public class MemoryModule extends BaseDebugModule{
+public class MemoryModule extends BaseDebugModule {
 
     @NonNull
     @Override
@@ -20,9 +22,16 @@ public class MemoryModule extends BaseDebugModule{
 
     @Override
     public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
-        //获取系统分配给应用的总内存大小
-        String size = Formatter.formatFileSize(getActivity(), Runtime.getRuntime().totalMemory());
-        return builder.addText("Total Memory", size).build();
+        long freeMemory = Runtime.getRuntime().freeMemory();
+        long totalMemory = Runtime.getRuntime().totalMemory();
+
+        DecimalFormat format = new DecimalFormat("0.00%");
+        String percent = format.format((double) freeMemory / totalMemory);
+
+        return builder.addText("Free/Total",
+                Formatter.formatFileSize(getActivity(), freeMemory) + "/" + Formatter.formatFileSize(getActivity(), totalMemory) 
+                        + " (" + percent + ")")
+                .build();
     }
-    
+
 }

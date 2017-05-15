@@ -5,57 +5,76 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:context=".MainActivity"
         >
 
         <include layout="@layout/toolbar" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            >
 
-        <Button
-            android:id="@+id/open_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Open Drawer"
-            />
-        
-        <Button
-            android:id="@+id/db_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="jump to DB activity"
-            />
+            <Button
+                android:id="@+id/open_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Open Drawer"
+                />
 
-        <Button
-            android:id="@+id/leak_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="jump to leak activity"
-            />
+            <Button
+                android:id="@+id/db_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="jump to DB activity"
+                />
 
-        <Button
-            android:id="@+id/okhttp_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="jump to okHttp3 activity"
-            />
+            <Button
+                android:id="@+id/leak_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="jump to leak activity"
+                />
 
-        <Button
-            android:id="@+id/ui_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jump To UI Activity"
-            />
-        
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="20dp"
-            android:src="@drawable/kale"
-            />
+            <Button
+                android:id="@+id/okhttp_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="jump to okHttp3 activity"
+                />
+
+            <Button
+                android:id="@+id/ui_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Jump To UI Activity"
+                />
+
+            <Button
+                android:id="@+id/block_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Jump To Block Activity"
+                />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:layout_margin="20dp"
+                android:src="@drawable/kale"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 

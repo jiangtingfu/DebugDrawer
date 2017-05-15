@@ -17,12 +17,27 @@
 package io.palaima.debugdrawer.modules;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import io.palaima.debugdrawer.BaseDebugModule;
 import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.R;
+import io.palaima.debugdrawer.util.DebugDrawerUtil;
+
+import static io.palaima.debugdrawer.util.PackageManagerHook.KEY_CURRENT_VERSION_CODE;
+import static io.palaima.debugdrawer.util.PackageManagerHook.KEY_CURRENT_VERSION_NAME;
 
 
 public class BuildModule extends BaseDebugModule {
@@ -36,8 +51,8 @@ public class BuildModule extends BaseDebugModule {
     }
 
     @Override
-    public void onCreate(Activity activity) {
-        super.onCreate(activity);
+    public void onAttachActivity(Activity activity) {
+        super.onAttachActivity(activity);
         try {
             info = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
@@ -51,7 +66,56 @@ public class BuildModule extends BaseDebugModule {
                 .addText("Version", String.valueOf(info.versionCode))
                 .addText("Name", info.versionName)
                 .addText("Package", info.packageName)
+                .addButton("modify version code/name", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new PkgDialog().show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), "pkgDialog");
+                    }
+                })
                 .build();
     }
-    
+
+    public static class PkgDialog extends DialogFragment {
+
+        private EditText codeEt;
+
+        private EditText nameEt;
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle("Input new info")
+                    .setView(R.layout.dd_pkg_info_dialog)
+                    .setPositiveButton("submit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences.Editor spEditor = DebugDrawerUtil.getSpEditor(getContext());
+                            spEditor.putInt(KEY_CURRENT_VERSION_CODE,
+                                    Integer.valueOf(codeEt.getText().toString().trim())).apply();
+                            spEditor.putString(KEY_CURRENT_VERSION_NAME,
+                                    nameEt.getText().toString().trim()).apply();
+                            Toast.makeText(getActivity(), "success~", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .create();
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            codeEt = (EditText) getDialog().findViewById(R.id.code_et);
+            nameEt = (EditText) getDialog().findViewById(R.id.name_et);
+
+            try {
+                PackageInfo info = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+                codeEt.setText(String.valueOf(info.versionCode));
+                nameEt.setText(info.versionName);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+                codeEt.setText("N/A");
+                nameEt.setText("N/A");
+            }
+        }
+    }
 }

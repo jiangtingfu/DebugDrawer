@@ -55,8 +55,8 @@ public class DeviceModule extends BaseDebugModule {
     }
 
     @Override
-    public void onCreate(Activity activity) {
-        super.onCreate(activity);
+    public void onAttachActivity(Activity activity) {
+        super.onAttachActivity(activity);
         DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
         String densityBucket = getDensityString(displayMetrics);
         deviceMake = truncateAt(Build.MANUFACTURER, 20);

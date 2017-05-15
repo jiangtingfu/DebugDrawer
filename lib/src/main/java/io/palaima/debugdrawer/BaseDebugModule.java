@@ -11,18 +11,29 @@ public abstract class BaseDebugModule implements IDebugModule {
     private Activity activity;
 
     @Override
-    public void onCreate(Activity activity) {
+    public void onDrawerOpened() {
 
     }
 
     @Override
-    public void onDrawerOpened() {
+    public void onAttachActivity(Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityResume() {
+        
+    }
+
+    @Override
+    public void onActivityDestroy() {
 
     }
 
     @Override
     public void setActivity(Activity activity) {
         this.activity = activity;
+        onAttachActivity(activity);
     }
 
     public Activity getActivity() {

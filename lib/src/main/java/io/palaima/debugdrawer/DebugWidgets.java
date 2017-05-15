@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,72 +32,119 @@ public class DebugWidgets {
 
     public static class DebugWidgetsBuilder {
 
+        public static final int DEFAULT_VIEW_ID = -1;
+
         private Context context;
 
-        private List<DebugWidget> widgets1;
+        private List<DebugWidget> widgetList;
 
         DebugWidgetsBuilder(Context context) {
             this.context = context;
-            widgets1 = new ArrayList<>();
+            widgetList = new ArrayList<>();
         }
 
-        public DebugWidgetsBuilder addText(String title, int number) {
-            return addText(title, String.valueOf(number));
+        public DebugWidgetsBuilder addText(String title, int content) {
+            return addText(title, String.valueOf(content), DEFAULT_VIEW_ID);
         }
 
-        public DebugWidgetsBuilder addText(String title, boolean b) {
-            return addText(title, String.valueOf(b));
+        public DebugWidgetsBuilder addText(String title, boolean content) {
+            return addText(title, String.valueOf(content), DEFAULT_VIEW_ID);
         }
 
-        public DebugWidgetsBuilder addText(String title, String summary) {
+        public DebugWidgetsBuilder addText(String title, int content, int id) {
+            return addText(title, String.valueOf(content), id);
+        }
+
+        public DebugWidgetsBuilder addText(String title, boolean content, int id) {
+            return addText(title, String.valueOf(content), id);
+        }
+
+        public DebugWidgetsBuilder addText(String title, String content) {
+            return addText(title, content, DEFAULT_VIEW_ID);
+        }
+
+        public DebugWidgetsBuilder addText(String title, String content, int id) {
             TextView textView = new TextView(new ContextThemeWrapper(context, R.style.Widget_DebugDrawer_Base_RowValue));
-            textView.setText(" " + summary);
-            return returnBuilder(title, textView);
+            textView.setText(" " + content);
+            widgetList.add(new DebugWidget(title, textView, id));
+            return this;
         }
 
         public DebugWidgetsBuilder addButton(String text, View.OnClickListener listener) {
+            return addButton(text, listener, DEFAULT_VIEW_ID);
+        }
+
+        public DebugWidgetsBuilder addButton(String text, View.OnClickListener listener, int id) {
             Button button = new Button(new ContextThemeWrapper(context, R.style.Widget_DebugDrawer_Base_RowWidget_Black));
             button.setText(text);
             button.setOnClickListener(listener);
-            return returnBuilder(null, button);
+            widgetList.add(new DebugWidget(null, button, id));
+            return this;
         }
 
-        public DebugWidgetsBuilder addIconButton(String text, @DrawableRes int drawableId, View.OnClickListener listener) {
+        public DebugWidgetsBuilder addIconButton(String text, @DrawableRes int drawableId,
+                View.OnClickListener listener) {
+            return addIconButton(text, drawableId, listener, DEFAULT_VIEW_ID);
+        }
+
+        public DebugWidgetsBuilder addIconButton(String text, @DrawableRes int drawableId,
+                View.OnClickListener listener, int id) {
+
             View view = LayoutInflater.from(context).inflate(R.layout.dd_icon_button, null);
             ((ImageView) view.findViewById(R.id.icon_iv)).setImageResource(drawableId);
             Button button = (Button) view.findViewById(R.id.summary_btn);
             button.setText(text);
             button.setOnClickListener(listener);
-            return returnBuilder(null, view);
+            widgetList.add(new DebugWidget(null, view, id));
+            return this;
         }
 
         public DebugWidgetsBuilder addSwitch(String title, boolean checked,
                 CompoundButton.OnCheckedChangeListener listener) {
+            return addSwitch(title, checked, listener, DEFAULT_VIEW_ID);
+        }
+
+        public DebugWidgetsBuilder addSwitch(String title, boolean checked,
+                CompoundButton.OnCheckedChangeListener listener, int id) {
             Switch sw = new Switch(new ContextThemeWrapper(context, R.style.Widget_DebugDrawer_Base_RowWidget));
             sw.setChecked(checked);
             sw.setOnCheckedChangeListener(listener);
-            return returnBuilder(title, sw);
-        }
-
-        @NonNull
-        private DebugWidgetsBuilder returnBuilder(String title, View view) {
-            widgets1.add(new DebugWidget(title, view));
+            widgetList.add(new DebugWidget(title, sw, id));
             return this;
         }
 
         public DebugWidgets build() {
-            return new DebugWidgets(widgets1);
+            return new DebugWidgets(widgetList);
         }
 
-        static class DebugWidget {
+        public DebugWidget getCurrentDebugWidget() {
+            return widgetList.get(widgetList.size());
+        }
 
-            String title;
+        public static class DebugWidget {
 
-            View view;
+            public String title;
 
-            DebugWidget(String title, View view) {
+            public View view;
+
+            public int id;
+
+            public DebugWidget(String title, View view, int id) {
                 this.title = title;
                 this.view = view;
+                this.id = id;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public <V extends View> V getView() {
+                return (V) view;
+            }
+
+            public int getId() {
+                return id;
             }
         }
     }

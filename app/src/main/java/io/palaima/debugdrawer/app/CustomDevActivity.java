@@ -6,13 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 
 /**
  * @author Kale
- * @date 2017/3/22
+ * @date 2017/5/10
  */
-public class UiActivity extends AppCompatActivity{
+public class CustomDevActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ui_activity);
+        setContentView(R.layout.dev_activity);
     }
 }

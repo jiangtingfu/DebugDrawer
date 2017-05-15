@@ -17,6 +17,10 @@
 
 package io.palaima.debugdrawer.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -29,17 +33,13 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.support.annotation.Nullable;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 public class NetworkController {
 
-    public enum BluetoothState {
+    private enum BluetoothState {
         On, Off, Turning_On, Turning_Off, Unknown
     }
 
-    public interface OnNetworkChangedListener {
+    interface OnNetworkChangedListener {
 
         void onChanged(NetworkChangeEvent event);
     }
@@ -60,7 +60,7 @@ public class NetworkController {
 
     public static NetworkController newInstance(Context context) {
         if (instance == null) {
-            instance = new NetworkController(context);
+            instance = new NetworkController(context.getApplicationContext());
         }
         return instance;
     }

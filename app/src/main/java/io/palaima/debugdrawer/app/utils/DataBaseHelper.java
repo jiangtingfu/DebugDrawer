@@ -1,4 +1,4 @@
-package io.palaima.debugdrawer.app;
+package io.palaima.debugdrawer.app.utils;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -17,11 +17,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "test_table";
 
-    static final String CATEGORY = "category";
+    public static final String CATEGORY = "category";
 
-    static final String LINE = "line";
+    public static final String LINE = "line";
 
-    static final String EXTRA = "extra";
+    public static final String EXTRA = "extra";
 
     private static final String CREATE_NEW_TABLE = "create table " + TABLE_NAME + "(" +
             "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -31,7 +31,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase mDb;
 
-    DataBaseHelper(Context context, String dbName) {
+    public DataBaseHelper(Context context, String dbName) {
         super(context, dbName, null, 1);
         try {
             mDb = getReadableDatabase();
@@ -97,7 +97,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     /**
      * 查询数据，？是占位符，用于和string数组搭配使用
      */
-    Cursor queryDataById(String id) {
+    public Cursor queryDataById(String id) {
         String sql = "select * from " + TABLE_NAME + " where _id=?";
         return executeSql(sql, new String[]{id});
     }

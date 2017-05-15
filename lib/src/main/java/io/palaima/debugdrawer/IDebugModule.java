@@ -9,14 +9,19 @@ import android.support.annotation.NonNull;
  */
 public interface IDebugModule {
 
-    @NonNull String getName();
+    @NonNull
+    String getName();
+
+    void onDrawerOpened();
 
     void setActivity(Activity activity);
 
-    void onCreate(Activity activity);
-    
-    DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder);
+    void onAttachActivity(Activity activity);
 
-    void onDrawerOpened();
+    void onActivityResume();
+
+    void onActivityDestroy();
+
+    DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder);
 
 }

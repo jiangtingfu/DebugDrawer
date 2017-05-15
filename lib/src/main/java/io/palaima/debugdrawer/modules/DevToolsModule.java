@@ -3,11 +3,14 @@ package io.palaima.debugdrawer.modules;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Toast;
 
 import io.palaima.debugdrawer.BaseDebugModule;
 import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.util.DebugDrawerUtil;
 
 /**
  * @author Kale
@@ -24,8 +27,8 @@ public class DevToolsModule extends BaseDebugModule {
     }
 
     @Override
-    public void onCreate(Activity activity) {
-        super.onCreate(activity);
+    public void onAttachActivity(Activity activity) {
+        super.onAttachActivity(activity);
         this.activity = activity;
     }
 
@@ -39,7 +42,14 @@ public class DevToolsModule extends BaseDebugModule {
                 String pkgName = "cn.trinea.android.developertools";
                 ComponentName cn = new ComponentName(pkgName, pkgName + ".MainActivity");
                 intent.setComponent(cn);
-                activity.startActivity(intent);
+
+                if (DebugDrawerUtil.hasHandler(getActivity(), intent)) {
+                    activity.startActivity(intent);
+                } else {
+                    Toast.makeText(activity, "本功能需要下载外部应用", Toast.LENGTH_SHORT).show();
+                    Uri uri = Uri.parse("http://app.mi.com/details?id=cn.trinea.android.developertools");
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                }
             }
         }).build();
     }

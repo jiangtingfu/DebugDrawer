@@ -40,7 +40,7 @@ public class SettingsModule extends BaseDebugModule {
     }
 
     @Override
-    public void onCreate(Activity activity) {
+    public void onAttachActivity(Activity activity) {
         this.activity = activity;
     }
 

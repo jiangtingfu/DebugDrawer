@@ -2,9 +2,12 @@ package io.palaima.debugdrawer.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class MainActivity extends BaseActivity {
+import io.palaima.debugdrawer.DebugDrawer;
+
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,7 +17,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.open_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                debugDrawer.openDrawer();
+                DebugDrawer.openDrawer(MainActivity.this);
             }
         });
         findViewById(R.id.db_btn).setOnClickListener(new View.OnClickListener() {
@@ -41,12 +44,12 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, UiActivity.class));
             }
         });
-        OkHttp3Activity.sendRequest();
+        findViewById(R.id.block_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, BlockActivity.class));
+            }
+        });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        debugDrawer.destroy();
-    }
 }
