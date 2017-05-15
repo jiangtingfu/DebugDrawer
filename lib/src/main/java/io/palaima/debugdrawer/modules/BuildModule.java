@@ -25,8 +25,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -69,7 +69,7 @@ public class BuildModule extends BaseDebugModule {
                 .addButton("modify version code/name", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new PkgDialog().show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), "pkgDialog");
+                        new PkgDialog().show(((FragmentActivity) getActivity()).getSupportFragmentManager(), "pkgDialog");
                     }
                 })
                 .build();

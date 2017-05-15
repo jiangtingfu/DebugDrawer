@@ -38,11 +38,13 @@ public class OkHttp3Module extends BaseDebugModule {
 
     @Override
     public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
-        builder = builder.addText("Max Size", Formatter.formatFileSize(activity, cache.maxSize()))
-                .addText("Write Errors", getWriteErrorCount())
-                .addText("Request Count", cache.requestCount())
-                .addText("Network Count", cache.networkCount())
-                .addText("Hit Count", cache.hitCount());
+        if (cache != null) {
+            builder = builder.addText("Max Size", Formatter.formatFileSize(activity, cache.maxSize()))
+                    .addText("Write Errors", getWriteErrorCount())
+                    .addText("Request Count", cache.requestCount())
+                    .addText("Network Count", cache.networkCount())
+                    .addText("Hit Count", cache.hitCount());
+        }
 
         if (DebugDrawerUtil.hasClass("com.github.simonpercic.oklog3.OkLogInterceptor")) {
             builder.addButton("Request List", new View.OnClickListener() {
