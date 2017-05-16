@@ -69,13 +69,13 @@ public class BuildModule extends BaseDebugModule {
                 .addButton("modify version code/name", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new PkgDialog().show(((FragmentActivity) getActivity()).getSupportFragmentManager(), "pkgDialog");
+                        new PkgDialog().show(getActivity().getFragmentManager(), "pkgDialog");
                     }
                 })
                 .build();
     }
 
-    public static class PkgDialog extends DialogFragment {
+    public static class PkgDialog extends android.app.DialogFragment {
 
         private EditText codeEt;
 
@@ -108,7 +108,7 @@ public class BuildModule extends BaseDebugModule {
             nameEt = (EditText) getDialog().findViewById(R.id.name_et);
 
             try {
-                PackageInfo info = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+                PackageInfo info = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
                 codeEt.setText(String.valueOf(info.versionCode));
                 nameEt.setText(info.versionName);
             } catch (PackageManager.NameNotFoundException e) {

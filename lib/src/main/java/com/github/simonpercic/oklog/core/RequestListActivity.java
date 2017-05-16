@@ -2,6 +2,7 @@ package com.github.simonpercic.oklog.core;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +26,7 @@ import io.palaima.debugdrawer.R;
  * @author Kale
  * @date 2017/5/12
  */
-public class RequestListActivity extends AppCompatActivity {
+public class RequestListActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
