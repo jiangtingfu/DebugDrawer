@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 
 /**
  * @author Kale
@@ -21,15 +21,15 @@ public class MemoryModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
-        long freeMemory = Runtime.getRuntime().freeMemory();
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
+        long maxMemory = Runtime.getRuntime().maxMemory();
         long totalMemory = Runtime.getRuntime().totalMemory();
 
         DecimalFormat format = new DecimalFormat("0.00%");
-        String percent = format.format((double) freeMemory / totalMemory);
+        String percent = format.format((double) totalMemory / maxMemory);
 
-        return builder.addText("Free/Total",
-                Formatter.formatFileSize(getActivity(), freeMemory) + "/" + Formatter.formatFileSize(getActivity(), totalMemory) 
+        return builder.addText("Total/Max",
+                Formatter.formatFileSize(getActivity(), totalMemory) + "/" + Formatter.formatFileSize(getActivity(), maxMemory) 
                         + " (" + percent + ")")
                 .build();
     }

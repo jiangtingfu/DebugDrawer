@@ -26,7 +26,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 import io.palaima.debugdrawer.R;
 
 public class SettingsModule extends BaseDebugModule {
@@ -45,7 +45,7 @@ public class SettingsModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
+    protected DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
         return builder
                 .addIconButton("Wifi", R.drawable.wifi, new View.OnClickListener() {
                     @Override

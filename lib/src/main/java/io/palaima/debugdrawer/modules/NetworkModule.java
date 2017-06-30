@@ -22,7 +22,7 @@ import android.support.annotation.NonNull;
 import android.widget.CompoundButton;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 import io.palaima.debugdrawer.util.NetworkController;
 
 
@@ -43,7 +43,7 @@ public class NetworkModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
         builder.addSwitch("Wifi", networkController.isWifiEnabled(),
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override

@@ -9,7 +9,7 @@ import com.github.moduth.blockcanary.BlockCanary;
 import com.hugo.watcher.Watcher;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 import io.palaima.debugdrawer.util.DebugDrawerUtil;
 
 /**
@@ -27,7 +27,7 @@ public class MonitorModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
         builder.addSwitch("Fps & Memory", isFpsFloatShown(), new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

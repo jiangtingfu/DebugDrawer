@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 import io.palaima.debugdrawer.util.DebugDrawerUtil;
 
 /**
@@ -33,7 +33,7 @@ public class DevToolsModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
         return builder.addButton("Jump to Dev-Tools", new View.OnClickListener() {
             @Override
             public void onClick(View view) {

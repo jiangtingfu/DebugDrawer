@@ -29,20 +29,24 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 import io.palaima.debugdrawer.R;
 import io.palaima.debugdrawer.util.DebugDrawerUtil;
 
 import static io.palaima.debugdrawer.util.PackageManagerHook.KEY_CURRENT_VERSION_CODE;
 import static io.palaima.debugdrawer.util.PackageManagerHook.KEY_CURRENT_VERSION_NAME;
 
-
 public class BuildModule extends BaseDebugModule {
 
+    private DebugWidgetStore store;
+
     private PackageInfo info;
+
+    private static final int ID_VERSION_CODE = R.id.version_code_view_id, ID_VERSION_NAME = R.id.version_name_view_id;
 
     @NonNull
     @Override
@@ -61,21 +65,26 @@ public class BuildModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
-        return builder
-                .addText("Version", String.valueOf(info.versionCode))
-                .addText("Name", info.versionName)
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
+        store = builder
+                .addText("Version", String.valueOf(info.versionCode), ID_VERSION_CODE)
+                .addText("Name", info.versionName, ID_VERSION_NAME)
                 .addText("Package", info.packageName)
                 .addButton("modify version code/name", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new PkgDialog().show(getActivity().getFragmentManager(), "pkgDialog");
+                        PkgDialog dialog = new PkgDialog();
+                        dialog.show(((FragmentActivity) getActivity()).getSupportFragmentManager(), "pkgDialog");
+                        dialog.setWidgetStore(store);
                     }
                 })
                 .build();
+        return store;
     }
 
-    public static class PkgDialog extends android.app.DialogFragment {
+    public static class PkgDialog extends DialogFragment {
+
+        private DebugWidgetStore widgetStore;
 
         private EditText codeEt;
 
@@ -116,6 +125,17 @@ public class BuildModule extends BaseDebugModule {
                 codeEt.setText("N/A");
                 nameEt.setText("N/A");
             }
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            super.onDismiss(dialog);
+            ((TextView) widgetStore.getDebugWidget(ID_VERSION_CODE).getView()).setText(codeEt.getText());
+            ((TextView) widgetStore.getDebugWidget(ID_VERSION_NAME).getView()).setText(nameEt.getText());
+        }
+
+        public void setWidgetStore(DebugWidgetStore widgetStore) {
+            this.widgetStore = widgetStore;
         }
     }
 }

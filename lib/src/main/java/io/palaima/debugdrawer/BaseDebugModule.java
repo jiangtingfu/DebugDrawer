@@ -1,36 +1,33 @@
 package io.palaima.debugdrawer;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 
 /**
  * @author Kale
  * @date 2017/3/22
  */
-public abstract class BaseDebugModule implements IDebugModule {
+public abstract class BaseDebugModule {
 
     private Activity activity;
 
-    @Override
-    public void onDrawerOpened() {
-
+    protected void onDrawerOpened() {
     }
 
-    @Override
-    public void onAttachActivity(Activity activity) {
+    @NonNull
+    public abstract String getName();
 
+    protected abstract DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder);
+
+    protected void onAttachActivity(Activity activity) {
     }
 
-    @Override
-    public void onActivityResume() {
-        
+    protected void onActivityResume() {
     }
 
-    @Override
-    public void onActivityDestroy() {
-
+    protected void onActivityDestroy() {
     }
 
-    @Override
     public void setActivity(Activity activity) {
         this.activity = activity;
         onAttachActivity(activity);

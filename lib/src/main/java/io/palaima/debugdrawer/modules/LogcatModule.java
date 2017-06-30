@@ -1,16 +1,14 @@
 package io.palaima.debugdrawer.modules;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.CompoundButton;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 import io.palaima.debugdrawer.util.DebugDrawerUtil;
 import kale.debug.log.Logcat;
-import kale.debug.log.ui.LogActivity;
 import kale.debug.log.util.NetworkUtils;
 
 /**
@@ -40,16 +38,16 @@ public class LogcatModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
-        String address = NetworkUtils.getWebLogcatAddress(getActivity(), 8819);
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
+        String address = NetworkUtils.getWebLogcatAddress(activity, Logcat.LOGCAT_PORT);
         return builder
                 .addSwitch("Logcat Server", Logcat.isServerRunning(), new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                         if (isChecked) {
-                            Logcat.startLogCatServer(getActivity());
+                            Logcat.startLogCatServer(activity);
                         } else {
-                            Logcat.shutDownServer();
+                            Logcat.shutDownServer(activity);
                         }
                     }
                 })
@@ -57,7 +55,7 @@ public class LogcatModule extends BaseDebugModule {
                 .addButton("Show App Log", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        activity.startActivity(new Intent(activity, LogActivity.class));
+                        Logcat.jumpToLogcatActivity(activity);
                     }
                 }).build();
     }

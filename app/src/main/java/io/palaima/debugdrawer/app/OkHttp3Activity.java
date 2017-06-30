@@ -2,14 +2,12 @@ package io.palaima.debugdrawer.app;
 
 import java.io.IOException;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
+import android.widget.TextView;
 
-import com.github.simonpercic.oklog.core.RequestListActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
@@ -26,14 +24,9 @@ public class OkHttp3Activity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.okhttp_activity);
+        setContentView(R.layout.common_activity);
 
-        findViewById(R.id.request_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(OkHttp3Activity.this, RequestListActivity.class));
-            }
-        });
+        ((TextView) findViewById(R.id.content_tv)).setText("OkHttp");
 
         sendRequest("http://gank.io/api/data/%E7%A6%8F%E5%88%A9/10/1");
         sendRequest("http://gank.io/api/random/data/%E7%A6%8F%E5%88%A9/20");

@@ -2,6 +2,7 @@ package com.wanjian.sak.config;
 
 import android.content.Context;
 
+import com.wanjian.sak.layer.ForceBitmapWidthHeightLayer;
 import com.wanjian.sak.layer.InfoLayer;
 import com.wanjian.sak.layerview.HorizontalMeasureView;
 import com.wanjian.sak.layerview.TreeView;
@@ -37,6 +38,11 @@ public class SakConfigBuild extends Config.Build {
         for (int i = 0; i < mDefaultLayers.size(); i++) {
             if (mDefaultLayers.get(i) instanceof InfoLayer) {
                 // 删除自定义信息
+                mDefaultLayers.remove(i);
+                i--;
+                continue;
+            }
+            if (mDefaultLayers.get(i) instanceof ForceBitmapWidthHeightLayer) {
                 mDefaultLayers.remove(i);
                 i--;
             }

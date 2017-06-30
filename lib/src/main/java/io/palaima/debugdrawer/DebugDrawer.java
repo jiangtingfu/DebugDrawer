@@ -11,17 +11,17 @@ import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.CheckResult;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.amitshekhar.DebugDB;
 import com.github.moduth.blockcanary.BlockCanary;
+import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.github.simonpercic.oklog.core.CustomLogManager;
 import com.github.simonpercic.oklog.core.LogDataConfig;
 import com.github.simonpercic.oklog3.OkLogInterceptor;
 import com.hugo.watcher.Watcher;
+import com.squareup.leakcanary.LeakCanary;
 
-import io.palaima.debugdrawer.util.AppBlockCanaryContext;
 import io.palaima.debugdrawer.util.DebugDrawerUtil;
 import io.palaima.debugdrawer.util.PackageManagerHook;
 import okhttp3.OkHttpClient;
@@ -32,8 +32,6 @@ import okhttp3.OkHttpClient;
  */
 public class DebugDrawer {
 
-    private static final String TAG = "DebugDrawer";
-
     private static Map<Activity, DebugWidgetsFrame> sMap = new ArrayMap<>();
 
     public static OkHttpClient createOkLogHttpClient(OkHttpClient client) {
@@ -43,9 +41,7 @@ public class DebugDrawer {
 
         // create an instance of OkLogInterceptor using a builder()
         OkLogInterceptor.Builder builder = OkLogInterceptor.builder();
-
         OkLogInterceptor okLogInterceptor = null;
-
         try {
             Method buildLogDataConfig = builder.getClass().getSuperclass().getDeclaredMethod("buildLogDataConfig");
             buildLogDataConfig.setAccessible(true);
@@ -69,37 +65,6 @@ public class DebugDrawer {
                 .build();
     }
 
-    private static final int MAX_LOG_LENGTH = 4000;
-
-    protected static void log(int priority, String tag, String message) {
-        Log.d(TAG, "log: " + message.length());
-
-        if (message.length() < MAX_LOG_LENGTH) {
-            if (priority == Log.ASSERT) {
-                Log.wtf(tag, message);
-            } else {
-                Log.println(priority, tag, message);
-            }
-            return;
-        }
-
-        // Split by line, then ensure each line can fit into Log's maximum length.
-        for (int i = 0, length = message.length(); i < length; i++) {
-            int newline = message.indexOf('\n', i);
-            newline = newline != -1 ? newline : length;
-            do {
-                int end = Math.min(newline, i + MAX_LOG_LENGTH);
-                String part = message.substring(i, end);
-                if (priority == Log.ASSERT) {
-                    Log.wtf(tag, part);
-                } else {
-                    Log.println(priority, tag, part);
-                }
-                i = end;
-            } while (i < newline);
-        }
-    }
-
     public static void init(Application application, final Config cfg) {
         PackageManagerHook.hook(application); // hook pkgInfo
 
@@ -110,12 +75,20 @@ public class DebugDrawer {
             Watcher.getInstance().start(application);
             Watcher.getInstance().stop(application);
         }
-        /*if (DebugDrawerUtil.hasClass("com.squareup.leakcanary.LeakCanary")
+        if (DebugDrawerUtil.hasClass("com.squareup.leakcanary.LeakCanary")
                 && !LeakCanary.isInAnalyzerProcess(application)) {
             LeakCanary.install(application);
-        }*/
+        }
         if (DebugDrawerUtil.hasClass("com.github.moduth.blockcanary.BlockCanary")) {
-            BlockCanary.install(application, new AppBlockCanaryContext());
+            BlockCanary.install(application, new BlockCanaryContext() {
+                public int provideBlockThreshold() {
+                    return 500;
+                }
+
+                public boolean displayNotification() {
+                    return true;
+                }
+            }).start();
         }
 
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
@@ -189,7 +162,7 @@ public class DebugDrawer {
 
     public abstract static class Config {
 
-        protected abstract List<IDebugModule> getModules();
+        protected abstract List<BaseDebugModule> getModules();
 
     }
 }

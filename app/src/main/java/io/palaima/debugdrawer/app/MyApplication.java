@@ -1,26 +1,10 @@
 package io.palaima.debugdrawer.app;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Application;
 
-import io.palaima.debugdrawer.DebugDrawer;
-import io.palaima.debugdrawer.IDebugModule;
-import io.palaima.debugdrawer.modules.ActivityModule;
-import io.palaima.debugdrawer.modules.BuildModule;
-import io.palaima.debugdrawer.modules.DataBaseModule;
-import io.palaima.debugdrawer.modules.DevToolsModule;
-import io.palaima.debugdrawer.modules.DeviceModule;
-import io.palaima.debugdrawer.modules.LogcatModule;
-import io.palaima.debugdrawer.modules.MemoryModule;
-import io.palaima.debugdrawer.modules.MonitorModule;
-import io.palaima.debugdrawer.modules.NetworkModule;
-import io.palaima.debugdrawer.modules.OkHttp3Module;
-import io.palaima.debugdrawer.modules.SettingsModule;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
@@ -35,28 +19,12 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        SAK.init(this, new SakConfigBuild(this).build());
         okHttpClient = createOkHttpClientBuilder(this).build();
-        okHttpClient = DebugDrawer.createOkLogHttpClient(okHttpClient); // 依赖于：com.github.simonpercic:oklog3:2.1.0
-        DebugDrawer.init(this, new DebugDrawer.Config() {
-            @Override
-            protected List<IDebugModule> getModules() {
-                return new ArrayList<IDebugModule>(Arrays.asList(
-                        new ActivityModule(),
-                        new MonitorModule(), // 依赖于：com.github.xcc3641:watcher:0.5
-                        new MemoryModule(),
-                        new CustomDevModule(), // 自定义的module
-                        new DevToolsModule(),
-                        new BuildModule(),
-                        new NetworkModule(),
-                        new OkHttp3Module(okHttpClient), // 依赖于：com.squareup.okhttp3:okhttp:3.1.2
-                        new DataBaseModule(), // 依赖于：com.amitshekhar.android:debug-db:1.0.0
-                        new LogcatModule(), // 依赖于：com.github.tianzhijiexian:Logcat:1.0.7
-                        new DeviceModule(),
-                        new SettingsModule()
-                ));
-            }
-        });
+        initDebugDrawer(okHttpClient);
+    }
+
+    protected void initDebugDrawer(final OkHttpClient client) {
+        // empty
     }
 
     private static final int DISK_CACHE_SIZE = 30 * 1024 * 1024; // 30 MB

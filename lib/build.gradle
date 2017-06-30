@@ -22,9 +22,10 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     provided 'com.squareup.okhttp3:okhttp:3.1.2'
     provided 'com.amitshekhar.android:debug-db:1.0.0'
-    provided 'com.github.tianzhijiexian:Logcat:1.0.7'
+    provided 'com.github.tianzhijiexian:Logcat:e6332a63d6'
     provided 'com.github.simonpercic:oklog3:2.1.0'
+    provided 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     provided 'com.github.markzhai:blockcanary-android:1.5.0'
     provided 'com.github.xcc3641:watcher:0.5'
-    provided 'com.wanjian:sak:0.1.2.4'
+    provided 'com.wanjian:sak:0.1.2.8'
 }

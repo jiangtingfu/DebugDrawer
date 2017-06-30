@@ -47,14 +47,14 @@ public class DebugWidgetsFrame {
 
     private int drawerGravity = Gravity.END;
 
-    private List<IDebugModule> debugModules;
+    private List<BaseDebugModule> debugModules;
 
     private DrawerLayout.DrawerListener onDrawerListener;
 
     /**
      * Set the gravity for the drawer. START, LEFT | RIGHT, END
      */
-    public DebugWidgetsFrame(Activity activity, List<IDebugModule> debugModules) {
+    public DebugWidgetsFrame(Activity activity, List<BaseDebugModule> debugModules) {
         this.activity = activity;
         this.rootView = (ViewGroup) activity.findViewById(android.R.id.content);
         this.debugModules = debugModules;
@@ -93,7 +93,7 @@ public class DebugWidgetsFrame {
         setSliderLayout();
 
         GridLayout moduleGl = ((GridLayout) sliderLayout.findViewById(R.id.dd_module_gl));
-        for (IDebugModule module : debugModules) {
+        for (BaseDebugModule module : debugModules) {
             inflateModules(module, moduleGl);
         }
         activity = null;
@@ -135,7 +135,7 @@ public class DebugWidgetsFrame {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                for (IDebugModule module : debugModules) {
+                for (BaseDebugModule module : debugModules) {
                     module.onDrawerOpened();
                 }
             }
@@ -169,7 +169,7 @@ public class DebugWidgetsFrame {
         });
     }
 
-    private void inflateModules(IDebugModule module, GridLayout gl) {
+    private void inflateModules(BaseDebugModule module, GridLayout gl) {
         module.setActivity(activity);
         View titleV = LayoutInflater.from(activity).inflate(R.layout.dd_module_title, null, false);
         ((TextView) titleV.findViewById(R.id.title_tv)).setText(module.getName());
@@ -177,13 +177,13 @@ public class DebugWidgetsFrame {
         params.setMargins(0, 20, 0, 3);
         gl.addView(titleV, params);
 
-        DebugWidgets widgets = module.createWidgets(new DebugWidgets.DebugWidgetsBuilder(activity));
+        DebugWidgetStore widgets = module.createWidgetStore(new DebugWidgetStore.Builder(activity));
         if (widgets == null) {
             gl.removeView(titleV);
             return;
         }
 
-        for (DebugWidgets.DebugWidgetsBuilder.DebugWidget widget : widgets.getWidgets()) {
+        for (DebugWidget widget : widgets.getWidgets()) {
             if (widget.title != null) {
                 // add title widget
                 TextView tv = new TextView(new ContextThemeWrapper(activity, R.style.Widget_DebugDrawer_Base_RowTitle));
@@ -238,13 +238,13 @@ public class DebugWidgetsFrame {
 
 
     public void resume() {
-        for (IDebugModule module : debugModules) {
+        for (BaseDebugModule module : debugModules) {
             module.onActivityResume();
         }
     }
 
     public void destroy() {
-        for (IDebugModule module : debugModules) {
+        for (BaseDebugModule module : debugModules) {
             module.onActivityDestroy();
         }
     }

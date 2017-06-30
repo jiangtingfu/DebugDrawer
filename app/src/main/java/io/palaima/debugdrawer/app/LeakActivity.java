@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 /**
  * @author Kale
@@ -21,10 +22,12 @@ public class LeakActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.leak_activity);
+        setContentView(R.layout.common_activity);
         powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
         LeakClz.getInstance(this);
+
+        ((TextView) findViewById(R.id.content_tv)).setText("LeakCanary");
     }
 
     private static class LeakClz {

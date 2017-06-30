@@ -26,7 +26,7 @@ import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 
 
 /**
@@ -74,7 +74,7 @@ public class DeviceModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
         return builder.addText("OEM", deviceMake)
                 .addText("Device Model", deviceModel)
                 .addText("Cpu", deviceCpu)

@@ -8,7 +8,7 @@ import android.widget.CompoundButton;
 import com.amitshekhar.DebugDB;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 import io.palaima.debugdrawer.util.DebugDrawerUtil;
 import kale.debug.log.util.NetworkUtils;
 
@@ -33,7 +33,7 @@ public class DataBaseModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
         return builder
                 .addSwitch("DB Server", isServerRunning(), new CompoundButton.OnCheckedChangeListener() {
                     @Override

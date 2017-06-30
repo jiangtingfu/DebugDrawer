@@ -9,7 +9,7 @@ import android.view.View;
 import com.github.simonpercic.oklog.core.RequestListActivity;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 import io.palaima.debugdrawer.util.DebugDrawerUtil;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -37,7 +37,7 @@ public class OkHttp3Module extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
         if (cache != null) {
             builder = builder.addText("Max Size", Formatter.formatFileSize(activity, cache.maxSize()))
                     .addText("Write Errors", getWriteErrorCount())

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import io.palaima.debugdrawer.BaseDebugModule;
-import io.palaima.debugdrawer.DebugWidgets;
+import io.palaima.debugdrawer.DebugWidgetStore;
 
 /**
  * @author Kale
@@ -20,7 +20,7 @@ public class ActivityModule extends BaseDebugModule {
     }
 
     @Override
-    public DebugWidgets createWidgets(DebugWidgets.DebugWidgetsBuilder builder) {
+    public DebugWidgetStore createWidgetStore(DebugWidgetStore.Builder builder) {
         String fullName = getRunningActivityName(getActivity());
         String[] names = fullName.split("\\.");
         return builder.addText(null, names[names.length - 1]).build();

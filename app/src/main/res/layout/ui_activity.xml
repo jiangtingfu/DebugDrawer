@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/sak_box_bg"
+        android:background="@drawable/demo_bg"
         android:text="圆角10dp"
         android:textColor="@color/colorAccent"
         android:textSize="30sp"
