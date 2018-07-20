@@ -10,6 +10,11 @@ Faster development with Debug Drawer
 ![](./images/dd02.png)
 ![](./images/dd03.png)
 
+Android App进程的内存使用是有限制的，通过以下两个方法可以查看App可用内存的大小：
+
+ActivityManager.getMemoryClass()获得正常情况下可用内存的大小
+ActivityManager.getLargeMemoryClass()可以获得开启largeHeap最大的内存大小
+
 ## Add Gradle dependencies:
 
 #### `DebugDrawer`
